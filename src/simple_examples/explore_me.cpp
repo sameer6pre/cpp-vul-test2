@@ -37,7 +37,12 @@ static long insecureEncrypt(long input) {
 char gBuffer[5] = {0};
 
 static void trigger_global_buffer_overflow(const std::string &c) {
+  if (c.length() >= sizeof(gBuffer)) {
+    fprintf(stderr, "Input string is too large for the buffer\n");
+    return;
+  }
   memcpy(gBuffer, c.c_str(), c.length());
+  gBuffer[c.length()] = '\0'; // Ensure null-termination
   printf("%s\n", gBuffer);
 }
 
