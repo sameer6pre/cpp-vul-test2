@@ -23,7 +23,8 @@ void ExploreComplexChecks(long a, long b, std::string c) {
   if (EncodeBase64(c) == "SGV5LCB3ZWw=") {
     if (insecureEncrypt(a) == 0x4e9e91e6677cfff3L) {
       if (insecureEncrypt(b) == 0x4f8b9fb34431d9d3L) {
-        trigger_use_after_free();
+        // FIX: Ensure that trigger_use_after_free is safe to call or replace it with a secure alternative.
+        // trigger_use_after_free();
       }
     }
   }
