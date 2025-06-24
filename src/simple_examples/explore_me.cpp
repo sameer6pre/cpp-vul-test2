@@ -29,9 +29,13 @@ void ExploreComplexChecks(long a, long b, std::string c) {
   }
 }
 
-static long insecureEncrypt(long input) {
-  long key = 0xefe4eb93215cb6b0L;
-  return input ^ key;
+#include <openssl/aes.h>
+#include <cstring>
+
+static void secureEncrypt(const unsigned char* input, unsigned char* output, const unsigned char* key) {
+    AES_KEY encryptKey;
+    AES_set_encrypt_key(key, 128, &encryptKey);
+    AES_encrypt(input, output, &encryptKey);
 }
 
 char gBuffer[5] = {0};
