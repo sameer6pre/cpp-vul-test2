@@ -45,6 +45,6 @@ static void trigger_use_after_free() {
   auto *buffer = static_cast<char *>(malloc(6));
   memcpy(buffer, "hello", 5);
   buffer[5] = '\0';
-  free(buffer);
-  printf("%s\n", buffer);
+  printf("%s\n", buffer); // Use the buffer before freeing it
+  free(buffer); // Free the buffer after use
 }
