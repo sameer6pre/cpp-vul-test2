@@ -10,7 +10,8 @@ void ExploreStructuredInputChecks(InputStruct inputStruct){
     if (inputStruct.c == "Attacker") {
         if (insecureEncrypt(inputStruct.a) == 0x4e9e91e6677cfff3L) {
             if (insecureEncrypt(inputStruct.b) == 0x4f8b9fb34431d9d3L) {
-                trigger_double_free();
+                // FIX: Remove or replace the call to trigger_double_free to prevent double free vulnerabilities.
+                // trigger_double_free();
             }
         }
     }
