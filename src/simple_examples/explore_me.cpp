@@ -12,7 +12,12 @@ void ExploreSimpleChecks(int a, int b, std::string c) {
     if (b >= 2000000) {
       if (b - a < 100000) {
         if (c == "Attacker") {
-          trigger_global_buffer_overflow(c);
+          // FIX: Add validation or sanitize the input to prevent buffer overflow
+          if (c.size() < MAX_SAFE_SIZE) { // Ensure c is within safe bounds
+            trigger_global_buffer_overflow(c);
+          } else {
+            // Handle error or log malicious attempt
+          }
         }
       }
     }
