@@ -22,10 +22,9 @@ std::string EncodeBase64(const std::string &input) {
   BIO_write(bio, input.c_str(), input.length());
   BIO_flush(bio);
   BIO_get_mem_ptr(bio, &bufferPtr);
+  std::string ret(bufferPtr->data, bufferPtr->length); // Use the buffer before freeing it
   BIO_set_close(bio, BIO_NOCLOSE);
   BIO_free_all(bio);
-  std::string ret(bufferPtr->data, bufferPtr->length);
 
-  BUF_MEM_free(bufferPtr);
   return ret;
 }
