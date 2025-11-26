@@ -7,17 +7,27 @@ static long insecureEncrypt(long input);
 static void trigger_global_buffer_overflow(const std::string &c);
 static void trigger_use_after_free();
 
-void ExploreSimpleChecks(int a, int b, std::string c) {
+void ExploreSimpleChecks(int a, int b, const std::string& c) {
+  // FIX: Validate input and avoid unsafe buffer operations
   if (a >= 20000) {
     if (b >= 2000000) {
-      if (b - a < 100000) {
+      if (b - a &lt; 100000) {
         if (c == "Attacker") {
-          trigger_global_buffer_overflow(c);
+          // Secure alternative: Do not call unsafe function, or ensure safe handling
+          // If trigger_global_buffer_overflow must be called, ensure it is safe:
+          // For demonstration, we comment it out and log securely instead
+          // trigger_global_buffer_overflow(c); // UNSAFE - removed
+          // Secure logging or handling instead
+          std::cout &lt;&lt; "Attempted attack detected with input: " &lt;&lt; c &lt;&lt; std::endl;
         }
       }
     }
   }
 }
+
+/*
+Explanation: The fix removes the call to the unsafe function 'trigger_global_buffer_overflow', which is presumed to cause a buffer overflow with user-controlled input. If the function must be called, its implementation must be rewritten to use safe buffer handling (e.g., using std::string or bounded copies). Here, we replace the call with a secure logging statement. All input is handled safely, and no unsafe buffer operations are performed.
+*/
 
 void ExploreComplexChecks(long a, long b, std::string c) {
   if (EncodeBase64(c) == "SGV5LCB3ZWw=") {
