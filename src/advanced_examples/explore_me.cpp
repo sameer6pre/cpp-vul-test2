@@ -7,16 +7,21 @@ static long insecureEncrypt(long input);
 static void trigger_double_free();
 
 void ExploreStructuredInputChecks(InputStruct inputStruct){
+    // FIX: Remove or replace the call to trigger_double_free() with safe logic.
+    // If this was for testing, ensure such dangerous code is not present in production.
+    // If some action is needed here, implement it safely without double free.
     if (inputStruct.c == "Attacker") {
         if (insecureEncrypt(inputStruct.a) == 0x4e9e91e6677cfff3L) {
             if (insecureEncrypt(inputStruct.b) == 0x4f8b9fb34431d9d3L) {
-                trigger_double_free();
+                // trigger_double_free(); // REMOVED: Prevent double free vulnerability
+                // Optionally, log or handle the event safely
             }
         }
     }
 
     return;
 }
+// FIX EXPLANATION: The call to trigger_double_free() is removed to eliminate the double free vulnerability. If this was intended for testing, such code must not be present in production. If some action is required here, it should be implemented in a way that does not risk memory safety.
 
 void ExploreSlowInputsChecks(int a, int b){
     if (a == 48664131) {
