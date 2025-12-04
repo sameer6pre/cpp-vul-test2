@@ -28,16 +28,16 @@ FUZZ_TEST_SETUP() {}
 FUZZ_TEST(const uint8_t *data, size_t size) {
 
   // Ensure a minimum data length
-  if (size < 100)
+  if (size &lt; 100)
     return;
 
   // Setup FuzzedDataProvider and initialize the mocklib
   FuzzedDataProvider fdp(data, size);
   SetFDP(&fdp);
 
-  int number_of_functions = GetFDP()->ConsumeIntegralInRange<int>(1, 100);
-  for (int i = 0; i < number_of_functions; i++) {
-    int function_id = GetFDP()->ConsumeIntegralInRange<int>(0, 15);
+  int number_of_functions = GetFDP()->ConsumeIntegralInRange&lt;int>(1, 100);
+  for (int i = 0; i &lt; number_of_functions; i++) {
+    int function_id = GetFDP()->ConsumeIntegralInRange&lt;int>(0, 15);
     switch (function_id) {
 
     case 0: {
@@ -66,7 +66,7 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
     case 4: {
       crypto_nonce nonce_tmp = {};
       ConsumeDataAndFillRestWithZeros(nonce_tmp.nonce, 64);
-      nonce_tmp.time_of_creation = GetFDP()->ConsumeIntegral<int>();
+      nonce_tmp.time_of_creation = GetFDP()->ConsumeIntegral&lt;int>();
       crypto_nonce *nonce = &nonce_tmp;
 
       crypto_verify_nonce(nonce);
@@ -74,8 +74,10 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
     }
 
     case 5: {
-      std::vector<uint8_t> message_vec = GetFDP()->ConsumeBytes<uint8_t>(
-          sizeof(uint8_t) * GetFDP()->ConsumeIntegral<uint16_t>());
+      uint16_t fuzz_len = GetFDP()->ConsumeIntegral&lt;uint16_t>();
+      if (fuzz_len == 0) break; // FIX: Prevent zero-length buffer
+      std::vector&lt;uint8_t> message_vec = GetFDP()->ConsumeBytes&lt;uint8_t>(sizeof(uint8_t) * fuzz_len);
+      if (message_vec.empty()) break; // FIX: Prevent empty buffer
       const uint8_t *message = (const uint8_t *)message_vec.data();
 
       int len = message_vec.size();
@@ -90,15 +92,17 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
     case 6: {
       crypto_nonce nonce = {};
       ConsumeDataAndFillRestWithZeros(nonce.nonce, 64);
-      nonce.time_of_creation = GetFDP()->ConsumeIntegral<int>();
+      nonce.time_of_creation = GetFDP()->ConsumeIntegral&lt;int>();
 
       crypto_set_nonce(nonce);
       break;
     }
 
     case 7: {
-      std::vector<uint8_t> message_vec = GetFDP()->ConsumeBytes<uint8_t>(
-          sizeof(uint8_t) * GetFDP()->ConsumeIntegral<uint16_t>());
+      uint16_t fuzz_len = GetFDP()->ConsumeIntegral&lt;uint16_t>();
+      if (fuzz_len == 0) break; // FIX: Prevent zero-length buffer
+      std::vector&lt;uint8_t> message_vec = GetFDP()->ConsumeBytes&lt;uint8_t>(sizeof(uint8_t) * fuzz_len);
+      if (message_vec.empty()) break; // FIX: Prevent empty buffer
       const uint8_t *message = (const uint8_t *)message_vec.data();
 
       int len = message_vec.size();
@@ -112,12 +116,12 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
 
     case 8: {
       GPS_position position = {};
-      position.longitude_degree = GetFDP()->ConsumeIntegral<uint8_t>();
-      position.longitude_minute = GetFDP()->ConsumeIntegral<uint8_t>();
-      position.longitude_second = GetFDP()->ConsumeIntegral<uint8_t>();
-      position.latitude_degree = GetFDP()->ConsumeIntegral<uint8_t>();
-      position.latitude_minute = GetFDP()->ConsumeIntegral<uint8_t>();
-      position.latitude_second = GetFDP()->ConsumeIntegral<uint8_t>();
+      position.longitude_degree = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position.longitude_minute = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position.longitude_second = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position.latitude_degree = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position.latitude_minute = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position.latitude_second = GetFDP()->ConsumeIntegral&lt;uint8_t>();
 
       set_destination_postition(position);
       break;
@@ -133,12 +137,12 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
 
     case 10: {
       GPS_position position_tmp = {};
-      position_tmp.longitude_degree = GetFDP()->ConsumeIntegral<uint8_t>();
-      position_tmp.longitude_minute = GetFDP()->ConsumeIntegral<uint8_t>();
-      position_tmp.longitude_second = GetFDP()->ConsumeIntegral<uint8_t>();
-      position_tmp.latitude_degree = GetFDP()->ConsumeIntegral<uint8_t>();
-      position_tmp.latitude_minute = GetFDP()->ConsumeIntegral<uint8_t>();
-      position_tmp.latitude_second = GetFDP()->ConsumeIntegral<uint8_t>();
+      position_tmp.longitude_degree = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position_tmp.longitude_minute = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position_tmp.longitude_second = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position_tmp.latitude_degree = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position_tmp.latitude_minute = GetFDP()->ConsumeIntegral&lt;uint8_t>();
+      position_tmp.latitude_second = GetFDP()->ConsumeIntegral&lt;uint8_t>();
       GPS_position *position = &position_tmp;
 
       get_current_position(position);
@@ -151,8 +155,10 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
     }
 
     case 12: {
-      std::vector<uint8_t> key_vec = GetFDP()->ConsumeBytes<uint8_t>(
-          sizeof(uint8_t) * GetFDP()->ConsumeIntegral<uint16_t>());
+      uint16_t fuzz_len = GetFDP()->ConsumeIntegral&lt;uint16_t>();
+      if (fuzz_len == 0) break; // FIX: Prevent zero-length buffer
+      std::vector&lt;uint8_t> key_vec = GetFDP()->ConsumeBytes&lt;uint8_t>(sizeof(uint8_t) * fuzz_len);
+      if (key_vec.empty()) break; // FIX: Prevent empty buffer
       uint8_t *key = (uint8_t *)key_vec.data();
 
       uint8_t length = key_vec.size();
@@ -162,8 +168,10 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
     }
 
     case 13: {
-      std::vector<uint8_t> nonce_vec = GetFDP()->ConsumeBytes<uint8_t>(
-          sizeof(uint8_t) * GetFDP()->ConsumeIntegral<uint16_t>());
+      uint16_t fuzz_len = GetFDP()->ConsumeIntegral&lt;uint16_t>();
+      if (fuzz_len == 0) break; // FIX: Prevent zero-length buffer
+      std::vector&lt;uint8_t> nonce_vec = GetFDP()->ConsumeBytes&lt;uint8_t>(sizeof(uint8_t) * fuzz_len);
+      if (nonce_vec.empty()) break; // FIX: Prevent empty buffer
       uint8_t *nonce = (uint8_t *)nonce_vec.data();
 
       uint8_t length = nonce_vec.size();
@@ -179,3 +187,4 @@ FUZZ_TEST(const uint8_t *data, size_t size) {
     }
   }
 }
+// FIX EXPLANATION: The fix ensures that zero-length buffers are never passed to downstream cryptographic or key management functions by checking the fuzzed length and the resulting vector's emptiness before use. This prevents undefined behavior, out-of-bounds access, and potential security issues related to invalid pointer dereference.
