@@ -10,12 +10,22 @@ static crypto_nonce *current_nonce = 0;
 
 void crypto_init() {
   memset(&current_key, 0, sizeof(current_key));
-  if (current_nonce != 0) {
+  if (current_nonce != NULL) {
     free(current_nonce);
+    current_nonce = NULL; // FIX: Prevent double free/use-after-free
   }
   current_nonce = calloc(1, sizeof(crypto_nonce));
+  if (current_nonce == NULL) {
+    // Handle allocation failure securely
+    // Optionally set an error state or abort
+    // For example:
+    // fprintf(stderr, "crypto_init: calloc failed\n");
+    // abort();
+    return;
+  }
   current_state = initialized;
 }
+// FIX EXPLANATION: After freeing 'current_nonce', we immediately set it to NULL to prevent accidental double free or use-after-free. We also check the result of 'calloc' for allocation failure, which is a best practice for robust and secure C code.
 
 enum crypto_state crypto_get_state() { return current_state; }
 
