@@ -5,6 +5,7 @@ cmake-build-debug/
 
 .cifuzz*/
 *fuzz*_inputs
+*fuzz*_inputs
 
 lcov.info
 
