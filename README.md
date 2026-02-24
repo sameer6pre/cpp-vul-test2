@@ -7,7 +7,6 @@ Building robust C/C++ applications is a highly challenging endeavor that require
 
 These examples require libssl-dev and libzstd-dev installed on Ubuntu. To install both dependencies you can run:
 ```sh
-sudo apt install libssl-dev libzstd-dev -y
 ```
 If you do not want to install both packages, you can use a devcontainer to run the examples, or comment out the include of the simple_examples folder in the main [CMakeLists.txt](CMakeLists.txt#L23) file.
 
