@@ -14,7 +14,6 @@ If you do not want to install both packages, you can use a devcontainer to run t
 In this example, we demonstrate how you can use CI Fuzz to integrate fuzz testing into your C/C++ projects. The example project uses [CMake](https://cmake.org/) as the build system and contains the following examples:
 * [Simple Checks Example](src/simple_examples/explore_me.cpp#L10):
 A simple example that triggers a buffer over when the input parameters satisfy certain criteria.
-We show that CI Fuzz can quickly generate a test case that trigger this bug.
 Execute with:
 ```sh
 cifuzz run simple_checks_fuzz_test
