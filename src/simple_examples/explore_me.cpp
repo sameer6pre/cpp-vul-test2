@@ -42,9 +42,14 @@ static void trigger_global_buffer_overflow(const std::string &c) {
 }
 
 static void trigger_use_after_free() {
-  auto *buffer = static_cast<char *>(malloc(6));
+  auto *buffer = static_cast&lt;char *>(malloc(6));
+  if (!buffer) {
+    fprintf(stderr, "Memory allocation failed\n");
+    return;
+  }
   memcpy(buffer, "hello", 5);
   buffer[5] = '\0';
+  printf("%s\n", buffer); // FIX: Use buffer before freeing
   free(buffer);
-  printf("%s\n", buffer);
 }
+// FIX EXPLANATION: The buffer is now only used (printed) before it is freed, eliminating the use-after-free. Additionally, a NULL check is added after malloc for robustness.
