@@ -4,10 +4,7 @@
 
 # Testing C/C++ for Security and Reliability
 Building robust C/C++ applications is a highly challenging endeavor that requires thorough testing. While C/C++ enables us to write high-performance code, the memory-unsafety nature of the language brings a broad spectrum of security risks. Memory corruption issues constitute the vast majority of bugs and security vulnerabilities found in C/C++ projects, and their impact is best demonstrated by the [Heartbleed](https://en.wikipedia.org/wiki/Heartbleed) bug on OpenSSL. Regular unit and integration tests are essential to test that our code functions correctly - they are not enough to uncover memory-corruption bugs. (Whitebox and smart) Fuzz testing on the other hand, has established itself as the best practical method to find these issues in large code bases such as Google Chrome.
-
-These examples require libssl-dev and libzstd-dev installed on Ubuntu. To install both dependencies you can run:
 ```sh
-sudo apt install libssl-dev libzstd-dev -y
 ```
 If you do not want to install both packages, you can use a devcontainer to run the examples, or comment out the include of the simple_examples folder in the main [CMakeLists.txt](CMakeLists.txt#L23) file.
 
