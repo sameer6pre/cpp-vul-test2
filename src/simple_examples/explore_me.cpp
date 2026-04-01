@@ -3,7 +3,7 @@
 #include "explore_me.h"
 #include "utils.h"
 
-static long insecureEncrypt(long input);
+To address this issue, ensure that the encryption algorithm used in the implementation of 'insecureEncrypt' adheres to modern cryptographic standards, such as AES with a secure mode of operation (e.g., GCM or CBC with proper padding). Additionally, use a well-established cryptographic library like OpenSSL or libsodium to avoid common pitfalls in cryptographic implementations.
 static void trigger_global_buffer_overflow(const std::string &c);
 static void trigger_use_after_free();
 
